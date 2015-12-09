@@ -20,11 +20,11 @@ public class MainForAssembler {
 			}
 			
 			if(command.startsWith("new")){
-				
+				processNewCommand(args);
 				
 			}
 			else if(command.startsWith("change")){
-				
+				processChangeCommand(args);
 				
 			}
 			
@@ -74,7 +74,20 @@ public class MainForAssembler {
 			printHelp();
 			return;
 		}
-	}
-	
-	
+		
+		ChangePasswordService changePwdSvc = assembler.getPwdSvc();
+		
+		try{
+			changePwdSvc.changePassword(args[1], args[2], args[3]);
+			System.out.println("암호를 변경했습니다.\n");
+		}
+		catch(MemberNotFoundException err){
+			System.out.println("존재하지 않는 이메일입니다.\n");
+			
+		}
+		catch(IdPasswordNotMachingException err) {
+			System.out.println("이메일과 암호가 일치하지 않습니다.\n");
+		}
+		
+	}	
 }
