@@ -25,8 +25,8 @@ public class MainForSpring {
    public static void main(String[] args) throws IOException {
       
 	   
-      ctx = new FileSystemXmlApplicationContext("classpath:appCtx.xml");
-      
+	  ctx = new FileSystemXmlApplicationContext("classpath:appCtx.xml");
+	  
       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
       
       while(true) {
