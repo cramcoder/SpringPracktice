@@ -1,8 +1,16 @@
-package spring;
+package main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import spring.AlreadyExistingMemberException;
+import spring.Assembler;
+import spring.ChangePasswordService;
+import spring.IdPasswordNotMachingException;
+import spring.MemberNotFoundException;
+import spring.MemberRegisterService;
+import spring.RegisterRequest;
 
 public class MainForAssembler {
 	private static Assembler assembler = new Assembler();
@@ -20,12 +28,13 @@ public class MainForAssembler {
 			}
 			
 			if(command.startsWith("new")){
-				processNewCommand(args);
+				processNewCommand(command.split(" "));
+				continue;
 				
 			}
 			else if(command.startsWith("change")){
-				processChangeCommand(args);
-				
+				processChangeCommand(command.split(" "));
+				continue;
 			}
 			
 			printHelp();

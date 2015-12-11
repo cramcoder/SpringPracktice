@@ -33,7 +33,7 @@ public class RegisterRequest {
 	}
 	public boolean isPasswordEqualToConfirmPassword() {
 		// TODO Auto-generated method stub
-		return false;
+		return password.equals(confirmPassword);
 	}
 	
 	
