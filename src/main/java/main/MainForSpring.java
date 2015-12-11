@@ -13,8 +13,10 @@ import spring.AlreadyExistingMemberException;
 import spring.Assembler;
 import spring.ChangePasswordService;
 import spring.IdPasswordNotMachingException;
+import spring.MemberInfoPrinter;
 import spring.MemberListPrinter;
 import spring.MemberNotFoundException;
+import spring.MemberPrinter;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
 
@@ -49,7 +51,12 @@ public class MainForSpring {
          }
          //회원정보 출력
          else if(command.startsWith("list")){
-        	 processListCommand(command.split(""));
+        	 processListCommand();
+        	 continue;
+         }
+         //지정한 회원 정보 출력
+         else if(command.startsWith("info")){
+        	 processInfoCommand(command.split(" "));
         	 continue;
          }
          printHelp();
@@ -114,5 +121,16 @@ public class MainForSpring {
    private static void processListCommand(String[] args){
 	   MemberListPrinter list = ctx.getBean("list", MemberListPrinter.class);
 	   list.selectAll();
+   }
+   
+   private static void processInfoCommand(String[] args){
+	   if(args.length != 2){
+		   printHelp();
+		   return;
+	   }
+	   
+	   MemberInfoPrinter infoPrinter = ctx.getBean("info", MemberInfoPrinter.class);
+	   infoPrinter.printMemberInfo(args[1]);
+
    }
 }
