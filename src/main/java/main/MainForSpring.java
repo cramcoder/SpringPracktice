@@ -89,7 +89,7 @@ public class MainForSpring {
          System.out.println("암호와 확인이 일치하지 않습니다.\n");
          return;
       }
-     
+        
       try {
       regSvc.regist(req);
       System.out.println("등록 성공.");
@@ -118,8 +118,8 @@ public class MainForSpring {
       }
    }
    
-   private static void processListCommand(String[] args){
-	   MemberListPrinter list = ctx.getBean("list", MemberListPrinter.class);
+   private static void processListCommand(){
+	   MemberListPrinter list = ctx.getBean("prtlist", MemberListPrinter.class);
 	   list.selectAll();
    }
    
