@@ -1,8 +1,13 @@
 package spring;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class Assembler {
+	@Autowired
 	private MemberDao memberDao;
+	@Autowired
 	private MemberRegisterService regSvc;
+	@Autowired
 	private ChangePasswordService pwdSvc;
 	
 	public Assembler(){

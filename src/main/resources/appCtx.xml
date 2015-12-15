@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+
+<context:component-scan base-package="spring"/>
 
 <bean id="memberDao" class="spring.MemberDao"></bean>
 
@@ -15,7 +22,7 @@
 
 <bean id="memberlist" class="spring.MemberPrinter"></bean>
 
-<bean id="prtlist" class="spring.MemberListPrinter">
+<bean id="list" class="spring.MemberListPrinter">
    <constructor-arg ref="memberDao"></constructor-arg>
    <constructor-arg ref="memberPrinter"></constructor-arg>
 </bean>
@@ -25,4 +32,4 @@
    <property name="printer" ref="memberPrinter"></property>
 </bean>
 
-</beans>    
+</beans>

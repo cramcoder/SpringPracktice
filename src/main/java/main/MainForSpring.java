@@ -62,6 +62,7 @@ public class MainForSpring {
          printHelp();
       }
    }
+   
    private static void printHelp() {
       System.out.println();
       System.out.println("잘못된 명령입니다. 아래 명령어 사용법을 확인하세요.");
@@ -70,6 +71,7 @@ public class MainForSpring {
       System.out.println("change 이메일 현재비번 변경비번");
       System.out.println();
    }
+   
    private static void processNewCommand(String[] args) {
       
       if(args.length != 5) {
@@ -98,6 +100,7 @@ public class MainForSpring {
          System.out.println("이미 존재하는 이메일 입니다.");
       }
    }
+   
    private static void processChangeCommand(String[] args) {
       if(args.length != 4){
          printHelp();
@@ -119,7 +122,7 @@ public class MainForSpring {
    }
    
    private static void processListCommand(){
-	   MemberListPrinter list = ctx.getBean("prtlist", MemberListPrinter.class);
+	   MemberListPrinter list = ctx.getBean("list", MemberListPrinter.class);
 	   list.selectAll();
    }
    

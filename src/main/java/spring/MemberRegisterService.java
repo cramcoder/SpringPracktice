@@ -2,7 +2,10 @@ package spring;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class MemberRegisterService {
+	@Autowired
 	private MemberDao memberDao;
 	
 	public MemberRegisterService(){}
@@ -10,6 +13,7 @@ public class MemberRegisterService {
 		this.memberDao = memberDao;
 	}
 	
+	@Autowired
 	public void regist(RegisterRequest req){
 		Member member = memberDao.selectByEmail(req.getEmail());
 		if(member != null){
