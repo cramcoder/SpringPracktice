@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<bean id="memberDao" class="spring.MemberDao"></bean>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost/spring4fs?characterEncoding=utf-8" />
+		<property name="user" value="spring4" />
+		<property name="password" value="spring4" />
+	</bean>
 
-<bean id="regSvc" class="spring.MemberRegisterService">
-   <constructor-arg ref="memberDao"></constructor-arg>
-</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
-<bean id="pwdSvc" class="spring.ChangePasswordService">
-   <constructor-arg ref="memberDao"></constructor-arg>
-</bean>
-
-<bean id="memberlist" class="spring.MemberPrinter"></bean>
-
-<bean id="list" class="spring.MemberListPrinter">
-   <constructor-arg ref="memberDao"></constructor-arg>
-   <constructor-arg ref="memberPrinter"></constructor-arg>
-</bean>
-
-<bean id="info" class="spring.MemberInfoPrinter">
-   <property name="memberDao" ref="memberDao"></property>
-   <property name="printer" ref="memberPrinter"></property>
-</bean>
-
+	<bean id="memberDao" class="spring.MemberDao">
+		<constructor-arg ref="jdbcTemplate" />
+	</bean>
+	
+	<bean id="regSvc" class="spring.MemberRegisterService">
+		<constructor-arg ref="memberDao"></constructor-arg>
+	</bean>
+	
+	<bean id="pwdSvc" class="spring.ChangePasswordService">
+		<constructor-arg ref="memberDao"></constructor-arg>
+	</bean>
+	
+	<bean id="memberPrinter" class="spring.MemberPrinter"></bean>
+	
+	<bean id="listPrinter" class="spring.MemberListPrinter">
+		<constructor-arg ref="memberDao"></constructor-arg>
+		<constructor-arg ref="memberPrinter"></constructor-arg>
+	</bean>
+	
+	<bean id="infoPrinter" class="spring.MemberInfoPrinter">
+		<property name="memberDao" ref="memberDao"></property>
+		<property name="printer" ref="memberPrinter"></property>
+	</bean>
 </beans>

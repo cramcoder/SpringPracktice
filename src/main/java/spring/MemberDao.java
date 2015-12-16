@@ -1,27 +1,77 @@
 package spring;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 public class MemberDao {
-	private static long nextId = 0;
-	private Map<String, Member> map = new HashMap<>();
+	private	static long nextId = 0;
+	private JdbcTemplate jdbcTemplate;
 	
-	public Member selectByEmail(String email){
-		return map.get(email);
+	public MemberDao(JdbcTemplate jdbcTemplate){
+		this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	public void insert(Member member){
-		member.setId(++nextId);
+	public Member selectByEmail(String email){
+		String sql = "select * from MEMBER where EMAIL=?";
+		List<Member> results = 
+				jdbcTemplate.query(sql, new RowMapperImpl(), email);
+		
+		return results.isEmpty() ? null : results.get(0);
+	}
+	
+	class RowMapperImpl implements RowMapper{
+		public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+			Member member = new Member(rs.getString("EMAIL"), 
+					rs.getString("PASSWORD"), rs.getString("NAME"),
+					rs.getTimestamp("REGDATE"));
+			member.setId(rs.getLong("ID"));
+			
+			return member;
+		}
+	}
+
+	public void insert(final Member member){
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(new PreparedStatementCreator()  {
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				String sql = "insert into member(email, password, name, regdate) value(?,?,?,?)";
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[]{"ID"});
+				pstmt.setString(1, member.getEmail());
+				pstmt.setString(2, member.getPassword());
+				pstmt.setString(3, member.getName());
+				pstmt.setTimestamp(4, new Timestamp(member.getRegisterDate().getTime()));
+				return pstmt;
+			}
+		}, keyHolder);
+		
+		Number keyvalue = keyHolder.getKey();
+		member.setId(keyvalue.longValue());
 	}
 	
 	public void update(Member member){
-		map.put(member.getEmail(), member);
+		jdbcTemplate.update("update member set name=?, password=? where email=?", 
+				member.getName(), member.getPassword(), member.getEmail());
 	}
 	
 	public Collection<Member> selectAll(){
-		return map.values();
+		String sql = "select * from MEMBER";
+		List<Member> results = 
+				jdbcTemplate.query(sql, new RowMapperImpl());
 		
+		return results;
 	}
 }
