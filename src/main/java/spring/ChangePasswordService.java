@@ -10,7 +10,7 @@ public class ChangePasswordService {
 	
 	public void changePassword(String email, String oldPw, String newPw){
 		Member member = memberDao.selectByEmail(email);
-		if(member != null){
+		if(member == null){
 			throw new MemberNotFoundException();
 		}
 		member.changePassword(oldPw, newPw);

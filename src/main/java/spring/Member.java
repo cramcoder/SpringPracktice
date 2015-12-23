@@ -30,9 +30,11 @@ public class Member {
 	public Date getRegisterDate() {return registerDate;}
 	
 	public void changePassword(String oldPassword, String newPassword){
+		
 		if(!password.equals(oldPassword)){
 			throw new IdPasswordNotMachingException();
 		}
+		
 		this.password = newPassword;
 	}
 	
